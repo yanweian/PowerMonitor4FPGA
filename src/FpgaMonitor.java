@@ -29,7 +29,7 @@ public class FpgaMonitor {
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
             String line;
             while ((line = br.readLine()) != null) {
-                if(line.contains(")")){
+                if(line.contains(")")&&line.contains("USB")){
                     result.add(line.substring(3));
                 }
             }
