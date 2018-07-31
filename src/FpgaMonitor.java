@@ -9,7 +9,7 @@ import java.util.List;
  * @create: 2018-07-31 15:08
  **/
 public class FpgaMonitor {
-    final static String parentDirectory="/home/test/fpga_monitor";
+    final static String parentDirectory="/home/test/Desktop/fpga_monitor";
     public static ArrayList<String> getUsbBlaster(){
         ArrayList<String> result = new ArrayList<>();
         List<String> commend = new ArrayList<>();
