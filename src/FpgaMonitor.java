@@ -1,6 +1,4 @@
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,8 +10,8 @@ import java.util.List;
  **/
 public class FpgaMonitor {
     final static String parentDirectory="/home/test/fpga_monitor";
-    public static String getUsbBlaster(){
-        StringBuffer result = new StringBuffer();
+    public static ArrayList<String> getUsbBlaster(){
+        ArrayList<String> result = new ArrayList<>();
         List<String> commend = new ArrayList<>();
         //检查usb-balster,并获取列表
         commend.add("jtagconfig");
@@ -28,13 +26,16 @@ public class FpgaMonitor {
             Process p = builder.start();
             // 读取进程标准输出流
             in = p.getInputStream();
-            byte[] re = new byte[1024];
-            while (in.read(re) != -1) {
-                result = result.append(new String(re));
+            BufferedReader br = new BufferedReader(new InputStreamReader(in));
+            String line;
+            while ((line = br.readLine()) != null) {
+                if(line.contains(")")){
+                    result.add(line.substring(3));
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return result.toString();
+        return result;
     }
 }
