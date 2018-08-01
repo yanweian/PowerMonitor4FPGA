@@ -84,8 +84,8 @@ public class FpgaMonitor {
                     System.out.println(monitor.toString());
                     if (DBUtil.insert(monitor) > 0) {
                         System.out.println("插入成功");
+                        monitor = new Monitor();
                     }
-                    monitor = new Monitor();
                 } else if (line.contains("core_power")) {
                     monitor.setCore_power(Integer.parseInt(line.split(" ")[2]));
                 } else if (line.contains("ddr_power")) {
