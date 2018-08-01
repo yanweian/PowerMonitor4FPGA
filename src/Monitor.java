@@ -25,6 +25,19 @@ public class Monitor {
 
     public Monitor(){}
 
+    @Override
+    public String toString() {
+        return "Monitor{" +
+                "usb='" + usb + '\'' +
+                ", time=" + time +
+                ", core_power=" + core_power +
+                ", ddr_power=" + ddr_power +
+                ", board_power=" + board_power +
+                ", core_tem=" + core_tem +
+                ", board_tem=" + board_tem +
+                '}';
+    }
+
     public String getUsb() {
         return usb;
     }

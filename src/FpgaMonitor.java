@@ -81,6 +81,7 @@ public class FpgaMonitor {
                     monitor.setUsb(usb);
                     monitor.setTime(new Date().getTime());
                 } else if (line.contains("endMonitor")) {
+                    System.out.println(monitor.toString());
                     if (DBUtil.insert(monitor) > 0) {
                         System.out.println("插入成功");
                     }
