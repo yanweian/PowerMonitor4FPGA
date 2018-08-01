@@ -6,5 +6,6 @@ public class Main {
         ArrayList<String> usbs=FpgaMonitor.getUsbBlaster();
         System.out.println(usbs);
         FpgaMonitor.executeCommand(usbs.get(0));
+        DBUtil.closeConn();
     }
 }

@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -9,11 +10,11 @@ import java.util.List;
  * @create: 2018-07-31 15:08
  **/
 public class FpgaMonitor {
-    final static String parentDirectory="/home/test/Desktop/fpga_monitor";
+    final static String parentDirectory = "/home/test/Desktop/fpga_monitor";
 //    static ProcessBuilder builder;
 
     //获取usb-blaster列表
-    public static ArrayList<String> getUsbBlaster(){
+    public static ArrayList<String> getUsbBlaster() {
         ArrayList<String> result = new ArrayList<>();
         List<String> commend = new ArrayList<>();
         //检查usb-balster,并获取列表
@@ -32,7 +33,7 @@ public class FpgaMonitor {
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
             String line;
             while ((line = br.readLine()) != null) {
-                if(line.contains(")")&&line.contains("USB")){
+                if (line.contains(")") && line.contains("USB")) {
                     result.add(line.substring(3));
                 }
             }
@@ -43,23 +44,23 @@ public class FpgaMonitor {
     }
 
     //获取日志文件夹
-    public static String getRootDirectory(String usb){
-        String path=parentDirectory+"/"+usb;
-        File file=new File(path);
-        if(!file.exists()){
+    public static String getRootDirectory(String usb) {
+        String path = parentDirectory + "/" + usb;
+        File file = new File(path);
+        if (!file.exists()) {
             file.mkdirs();
         }
-        if(!file.isDirectory()){
+        if (!file.isDirectory()) {
             file.mkdirs();
         }
         return path;
     }
 
     //执行
-    public static ProcessBuilder executeCommand(String usb){
-        List<String> command=new ArrayList<>();
+    public static ProcessBuilder executeCommand(String usb) {
+        List<String> command = new ArrayList<>();
         command.add("nios2-terminal");
-        command.add("--cable="+usb);
+        command.add("--cable=" + usb);
         ProcessBuilder builder = new ProcessBuilder(command);
         //切换命令文件夹
         builder.directory(new File(parentDirectory));
@@ -73,7 +74,28 @@ public class FpgaMonitor {
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
             String line;
             while ((line = br.readLine()) != null) {
+                Monitor monitor = new Monitor();
                 System.out.println(line);
+                if (line.contains("startMonitor")) {
+                    monitor = new Monitor();
+                    monitor.setUsb(usb);
+                    monitor.setTime(new Date().getTime());
+                } else if (line.contains("endMonitor")) {
+                    if (DBUtil.insert(monitor) > 0) {
+                        System.out.println("插入成功");
+                    }
+                    monitor = new Monitor();
+                } else if (line.contains("core_power")) {
+                    monitor.setCore_power(Integer.parseInt(line.split(" ")[2]));
+                } else if (line.contains("ddr_power")) {
+                    monitor.setDdr_power(Integer.parseInt(line.split(" ")[2]));
+                } else if (line.contains("board_power")) {
+                    monitor.setBoard_power(Integer.parseInt(line.split(" ")[2]));
+                } else if (line.contains("core_temperature")) {
+                    monitor.setCore_tem(Integer.parseInt(line.split(" ")[2]));
+                } else if (line.contains("board_temperature")) {
+                    monitor.setBoard_tem(Integer.parseInt(line.split(" ")[2]));
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
