@@ -1,6 +1,10 @@
+import java.util.ArrayList;
+
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println(FpgaMonitor.getUsbBlaster());
+        ArrayList<String> usbs=FpgaMonitor.getUsbBlaster();
+        System.out.println(usbs);
+        FpgaMonitor.executeCommand(usbs.get(0));
     }
 }
