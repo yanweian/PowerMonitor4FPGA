@@ -77,7 +77,8 @@ public class FpgaMonitor {
                 Monitor monitor = new Monitor();
                 System.out.println(line);
                 System.out.println(monitor.toString());
-                System.out.println(Integer.parseInt(line.split(" ")[2]));
+                String[] lines=line.split(" ");
+                System.out.println(lines);
                 System.out.println("usb"+usb);
                 if (line.contains("startMonitor")) {
                     monitor = new Monitor();
